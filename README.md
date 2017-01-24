@@ -11,7 +11,6 @@ sbt run 300 2
 ```
 
 
-Left-over TODOs:
+TODO/Improvements:
  * Should use data-driven tests in ScalaTest, like i would do with TestNG or JUnit
  * Should make O(k*log(n)) case work with function g() as in wikipedia
- * test for rotation of 1 bit

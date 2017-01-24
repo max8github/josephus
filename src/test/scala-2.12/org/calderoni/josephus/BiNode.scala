@@ -3,6 +3,9 @@ package org.calderoni.josephus
 /**
   * Created by max on 1/22/17. Class represents a node for doubly linked lists.
   * It is used to model a player in a circle of players in this counting out game.
+  * Only used for tests and validation.
+  *
+  * There must be a doubly-linked list already implemented in Scala, but this is easy enough for its scope.
   */
 case class BiNode[T](var value: T, var left: BiNode[T] = null, var right: BiNode[T] = null) {
   override def toString: String = value.toString

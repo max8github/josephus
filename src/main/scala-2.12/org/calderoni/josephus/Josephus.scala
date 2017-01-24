@@ -9,6 +9,8 @@ object Josephus {
   val LARGE_N = 536870912
 
   def run(n: Int, k: Int) = {
+    require(n>0, "number of players should be strictly positive")
+    require(k>0, "skip should be strictly positive")
     if(k == 2) {
       josephusK2(n)
     } else if(n > LARGE_N && k*Math.log(n)/Math.log(2) <= n) {
@@ -42,6 +44,7 @@ object Josephus {
     * f(n,k) = (f(n-1,k) + k -1) % n + 1
     * which gives the recursive solution (see wikipedia).
     * The problem with this, however, is that can overflow for large n values, as it is not tail recursive.
+    * Best to use for small tests or validation.
     * @param n
     * @param k
     * @return

@@ -5,7 +5,7 @@ import org.scalatest.{FlatSpec, Ignore, Matchers}
 /**
   * Created by max on 1/22/17.
   */
-//@Ignore//on the works
+@Ignore//on the works
 class ExperimentalSpec extends FlatSpec with Matchers {
 
   "Function g with O(k*log(n)) solution" should "work" in {

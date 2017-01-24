@@ -1,6 +1,5 @@
 package org.calderoni.josephus
 
-import org.calderoni.josephus.BiNode._
 import org.calderoni.josephus.JosephusUtil._
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -8,6 +7,30 @@ import org.scalatest.{FlatSpec, Matchers}
   * Created by max on 1/22/17.
   */
 class JosephusSpec extends FlatSpec with Matchers {
+
+  //  an [IllegalArgumentException] should be thrownBy Josephus.run(0,1)
+  //  an [IllegalArgumentException] should be thrownBy Josephus.run(1,0)
+
+  "Invalid parameters" should "be caught" in {
+    val winner = Josephus.run(1, 1)
+    println(s"winner is $winner")
+    val thrown = intercept[IllegalArgumentException] {
+      Josephus.run(0, 3)
+    }
+    assert(thrown.getMessage === "requirement failed: number of players should be strictly positive")
+    intercept[IllegalArgumentException] {
+      Josephus.run(128, 0)
+    }
+  }
+
+  "n=3, k=2" should "work" in {
+    val k = 2
+    val n = 3
+    val f = Josephus.run(n, k)
+    val winner = josephusList(n, k)
+    f shouldBe winner
+    println(s"$winner")
+  }
 
   "For a given k, varying n, the Josephus game" should "match all given algorithms" in {
     val k = 3
@@ -25,6 +48,7 @@ class JosephusSpec extends FlatSpec with Matchers {
     for (i <- 1 to 100) {
       val winner = josephusList(i, i)
       val f = Josephus.fTR(i, i)
+      f shouldBe winner
       println(s"$i  ->  $winner")
     }
   }
@@ -42,14 +66,6 @@ class JosephusSpec extends FlatSpec with Matchers {
     val w = Josephus.josephusK2(n)
     w shouldBe 1
     println(s"($n,2)  ->  $w")
-  }
-
-  "A start node" should "be fully traversed in a circle" in {
-    val start = generateCircle(9)
-    val list = traverseCircle(start)
-    val result = list.mkString(",")
-    result shouldBe ("1,2,3,4,5,6,7,8,9")
-    println(s"Circle: ${result}")
   }
 }
 
