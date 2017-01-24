@@ -8,7 +8,50 @@ import org.scalatest.{FlatSpec, Matchers}
   */
 class JosephusSpec extends FlatSpec with Matchers {
 
-  "A circle" should "be fully traversed" in {
+  "For a given k, varying n, the Josephus game" should "match all given algorithms" in {
+    val k = 3
+    println("\nn      winner")
+    println("---------")
+    for (i <- 1 to 300) {
+      val winner = josephusList(i, k)
+      val f = Josephus.fTR(i, k)
+      val g = Josephus.g(i, k)
+      println(s"$i     $winner, $f, $g")
+    }
+  }
+
+  "Various circles with k=n" should "work" in {
+    for (i <- 1 to 100) {
+      val winner = josephusList(i, i)
+      val f = Josephus.fTR(i, i)
+      val g = Josephus.g(i, i)
+      println(s"$i  ->  $winner")
+    }
+  }
+
+  "A large number of players" should "not cause out of memory" in {
+    val n = 1073741824 / 2
+    val k = 540
+    //    val w = josephusList(n, k)
+    val w = Josephus.fTR(n, k)
+    //    val w = Josephus.josephusK2(n)
+    //    val w = Josephus.g(n, k)
+    println(s"($n,$k)  ->  $w")
+  }
+
+//  "Circles with g" should "work" in {
+//    val n = 2048
+//    val k = 4
+//    val chooseG = n - (k * Math.log(n) / Math.log(2))
+//    println(s"delta: $chooseG")
+//    (chooseG > 0) shouldBe true
+//    val winner = Josephus.g(n, k) + 1
+//    val expected = Josephus.fTR(n, k)
+//    println(s"winner $expected is: $winner")
+//    winner shouldBe expected
+//  }
+
+  "A start node" should "be fully traversed in a circle" in {
     val start = generateCircle(9)
     val list = traverseCircle(start)
     val result = list.mkString(",")
@@ -16,26 +59,7 @@ class JosephusSpec extends FlatSpec with Matchers {
     println(s"Circle: ${result}")
   }
 
-  "Loop with given k varying n" should "tabulate" in {
-    val k = 3
-    println("\nn      winner")
-    println("---------")
-    for (i <- 1 to 300) {
-      val circle = generateCircle(i)
-      val winner = josephusList(circle, k)
-      println(s"$i     $winner")
-    }
-  }
-
-  "Circles with k=n" should "work" in {
-    for (i <- 1 to 100) {
-      val circle = generateCircle(i)
-      val winner = josephusList(circle, i)
-      println(s"$i  ->  $winner")
-    }
-  }
-
-  def traverseCircle(bTNode: BiNode[Int]) = {
+  private def traverseCircle(bTNode: BiNode[Int]) = {
     var list: List[Int] = bTNode.value :: Nil
     var node = bTNode.right
     while (node != bTNode) {
@@ -47,12 +71,16 @@ class JosephusSpec extends FlatSpec with Matchers {
 
   /**
     * Runs Josephus' circle with n players and skip k.
+    * A bit of a brute force, no-brainer algorithm, but still O(n) (but also O(n) in memory!): used for basic tests.
     * Players are modeled as nodes in doubly-linked list circle. Game runs clockwise.
-    * @param startNode The starting player in the circle.
+    *
+    * @param n The number of players in the circle.
     * @param k the skip factor.
     * @return the winner node.
     */
-  def josephusList(startNode: BiNode[Int], k: Int) = {
+  private def josephusList(n: Int, k: Int) = {
+    //create circle first
+    val startNode = generateCircle(n)
     //current node
     var node = startNode
     //previous node
@@ -80,7 +108,7 @@ class JosephusSpec extends FlatSpec with Matchers {
       }
       j += 1
     }
-    node
+    node.value
   }
 }
 
