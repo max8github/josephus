@@ -12,25 +12,10 @@ object Josephus {
     if(k == 2) {
       josephusK2(n)
     } else if(n > LARGE_N && k*Math.log(n)/Math.log(2) <= n) {
-      g(n,k) + 1
+//      g(n,k) + 1 /// should really use this one, but needs work (TODO), see function g() in tests (ExperimentalSpec).
+      fTR(n,k)
     } else {
       fTR(n,k)
-    }
-  }
-
-  def g(n: Int, k: Int): Int = {
-    if(n==1) {
-      0
-    } else if(n>1 && k>n) {
-      (g(n-1, k) + k) % n
-    } else if(k<=n) {
-      val n1 = n - Math.floor((1.0d)*n/k).toInt
-      val d = g(n1,k) - n % k
-      val dk = d % n1
-      val v = k*dk*(1.0)/(k-1)
-      Math.floor(v).toInt
-    } else {
-      0
     }
   }
 
